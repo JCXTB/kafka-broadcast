@@ -1,0 +1,60 @@
+server:
+  port: 8082
+spring:
+  kafka:
+    bootstrap-servers: 10.101.1.18:9091,10.101.1.18:9092,10.101.1.18:9093
+    producer:
+      retries: 0
+      batch-size: 16384
+      buffer-memory: 33554432
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: 1
+    consumer:
+      auto-commit-interval: 1S
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    listener:
+      concurrency: 5
+      ack-mode: manual_immediate
+      missing-topics-fatal: false
+  datasource:
+    driverClassName: org.postgresql.Driver
+    druid:
+      filter:
+        commons-log:
+          statement-executable-sql-log-enable: true
+          statement-log-enabled: true
+        stat:
+          enabled: true
+          log-slow-sql: true
+      stat-view-servlet:
+        enabled: true
+        login-password: 123456
+        login-username: root
+        reset-enable: true
+        url-pattern: /druid/*
+    initialization-mode: never
+    logSlowSql: true
+    password: changeme
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:postgresql://10.101.1.17:15432/b
+    username: postgres
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        default_schema: public
+    show-sql: true
+kakfa:
+  group: b-group
+  topic:
+    producer:
+      b: b-topic
+    consumer:
+      a: a-topic
+      c: c-topic
